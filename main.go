@@ -7,7 +7,12 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+var (
+	URL = "http://localhost:8080"
+)
+
 func main() {
+	command.Init(URL)
 	app := cli.NewApp()
 	app.Name = "iloops"
 	app.Usage = "ILoops command client will allow you to deploy projects on the cloud"
@@ -37,7 +42,7 @@ func setCommands(app *cli.App) {
 		{
 			Name:   "create",
 			Usage:  "creates a new account",
-			Action: command.CreateAccount,
+			Action: command.CreateAccountCMD,
 		},
 		{
 			Name:   "login",
