@@ -35,6 +35,6 @@ func CreateAccount(userLogin *models.UserLogin) error {
 		}
 	} else {
 		fmt.Println(errMap)
-		return errors.New("Validation error")
+		return errMap
 	}
 }
