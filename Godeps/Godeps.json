@@ -1,0 +1,72 @@
+{
+	"ImportPath": "bitbucket.org/kiloops/toolbelt",
+	"GoVersion": "go1.4.2",
+	"Deps": [
+		{
+			"ImportPath": "bitbucket.org/kiloops/api/models",
+			"Rev": "a1b119e9ac0e7fa38ce1d195b042512bb66c437e"
+		},
+		{
+			"ImportPath": "bitbucket.org/kiloops/api/utils",
+			"Rev": "a1b119e9ac0e7fa38ce1d195b042512bb66c437e"
+		},
+		{
+			"ImportPath": "github.com/agtorre/gocolorize",
+			"Comment": "v1.0.0",
+			"Rev": "f42b554bf7f006936130c9bb4f971afd2d87f671"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "1.2.0-139-g142e6cd",
+			"Rev": "142e6cd241a4dfbf7f07a018f1f8225180018da4"
+		},
+		{
+			"ImportPath": "github.com/gosimple/slug",
+			"Rev": "89683c2e46c1b0b72bc8ef98a1bbb58922940e5f"
+		},
+		{
+			"ImportPath": "github.com/jinzhu/gorm",
+			"Rev": "e1ce3b706624d5a28d7d7bc4b48c9e61eac14896"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/hstore",
+			"Comment": "go1.0-cutoff-59-gb269bd0",
+			"Rev": "b269bd035a727d6c1081f76e7a239a1b00674c40"
+		},
+		{
+			"ImportPath": "github.com/qor/inflection",
+			"Rev": "45321e63b98c756df17369c027c1df89298e1288"
+		},
+		{
+			"ImportPath": "github.com/rainycape/unidecode",
+			"Rev": "836ef0a715aedf08a12d595ed73ec8ed5b288cac"
+		},
+		{
+			"ImportPath": "github.com/revel/revel",
+			"Comment": "v0.12.0-1-g83c6204",
+			"Rev": "83c62046c726f36daec7a28a335521f94b2561a6"
+		},
+		{
+			"ImportPath": "github.com/robfig/config",
+			"Rev": "0f78529c8c7e3e9a25f15876532ecbc07c7d99e6"
+		},
+		{
+			"ImportPath": "github.com/robfig/pathtree",
+			"Rev": "41257a1839e945fce74afd070e02bab2ea2c776a"
+		},
+		{
+			"ImportPath": "golang.org/x/net/websocket",
+			"Rev": "d9558e5c97f85372afee28cf2b6059d7d3818919"
+		},
+		{
+			"ImportPath": "gopkg.in/bluesuncorp/validator.v6",
+			"Comment": "v6.5",
+			"Rev": "c62ee7ccdf50d1660d426abc375602f769adca2f"
+		},
+		{
+			"ImportPath": "gopkg.in/fsnotify.v1",
+			"Comment": "v1.2.0",
+			"Rev": "96c060f6a6b7e0d6f75fddd10efeaca3e5d1bcb0"
+		}
+	]
+}
