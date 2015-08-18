@@ -15,26 +15,24 @@ import (
 )
 
 //CreateAccountCMD command
-func CreateAccountCMD() cli.Command {
-	return cli.Command{
-		Name:  "create",
-		Usage: "creates a new account",
-		Flags: []cli.Flag{
-			cli.StringFlag{
-				Name:  "email, e",
-				Usage: "user email",
-			},
-			cli.StringFlag{
-				Name:  "password, p",
-				Usage: "user password",
-			},
-			cli.StringFlag{
-				Name:  "ssh, s",
-				Usage: "ssh key",
-			},
+var CreateAccountCMD = cli.Command{
+	Name:  "create",
+	Usage: "creates a new account",
+	Flags: []cli.Flag{
+		cli.StringFlag{
+			Name:  "email, e",
+			Usage: "user email",
 		},
-		Action: createAccountImpl,
-	}
+		cli.StringFlag{
+			Name:  "password, p",
+			Usage: "user password",
+		},
+		cli.StringFlag{
+			Name:  "ssh, s",
+			Usage: "ssh key",
+		},
+	},
+	Action: createAccountImpl,
 }
 
 func createAccountImpl(c *cli.Context) {

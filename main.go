@@ -23,7 +23,8 @@ func main() {
 
 func setCommands(app *cli.App) {
 	app.Commands = []cli.Command{
-		command.CreateAccountCMD(),
+		command.CreateAccountCMD,
 		command.LoginCMD(),
+		command.LogoutCMD(),
 	}
 }

@@ -3,7 +3,6 @@ package command
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -60,16 +59,6 @@ func InfiniteFolder() string {
 //InfiniteConfigFile get path infinite folder
 func InfiniteConfigFile() string {
 	return InfiniteFolder() + "/config"
-}
-
-//Login user is login now?
-func LoginFile(token string) error {
-	if os.Mkdir(InfiniteFolder(), os.ModePerm) == nil {
-		if _, err := os.Create(InfiniteConfigFile()); err == nil {
-			return ioutil.WriteFile(InfiniteConfigFile(), []byte(token), os.ModePerm)
-		}
-	}
-	return errors.New("Error creating the config file")
 }
 
 //ReadToken return token in string
