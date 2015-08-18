@@ -2,11 +2,17 @@ package command
 
 import (
 	"bytes"
+	"encoding/json"
+	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"os"
+	"os/user"
 
 	"gopkg.in/bluesuncorp/validator.v6"
 
+	"bitbucket.org/kiloops/api/models"
 	"bitbucket.org/kiloops/api/utils"
 )
 
@@ -15,6 +21,7 @@ var (
 	apiVersion = "v1"
 )
 
+//Init a http client
 func Init(URL string) {
 	client = utils.Client{
 		&http.Client{},
@@ -23,6 +30,7 @@ func Init(URL string) {
 	}
 }
 
+//PrintError e
 func PrintError(e error) {
 	switch t := e.(type) {
 	case validator.ValidationErrors:
@@ -33,6 +41,7 @@ func PrintError(e error) {
 	}
 }
 
+//ErrMapString to string
 func ErrMapString(errMap validator.ValidationErrors) string {
 	var buffer bytes.Buffer
 	buffer.WriteString("Validation errors:\n")
@@ -42,9 +51,51 @@ func ErrMapString(errMap validator.ValidationErrors) string {
 	return buffer.String()
 }
 
-// func authHeaders(user models.User) map[string]string {
-// 	return map[string]string{
-// 		"AUTH_ID":    fmt.Sprintf("%d", user.ID),
-// 		"AUTH_TOKEN": user.Token,
-// 	}
-// }
+//InfiniteFolder get path infinite folder
+func InfiniteFolder() string {
+	userPath, _ := user.Current()
+	return string(userPath.HomeDir) + "/.infiniteloops"
+}
+
+//InfiniteConfigFile get path infinite folder
+func InfiniteConfigFile() string {
+	return InfiniteFolder() + "/config"
+}
+
+//Login user is login now?
+func LoginFile(token string) error {
+	if os.Mkdir(InfiniteFolder(), os.ModePerm) == nil {
+		if _, err := os.Create(InfiniteConfigFile()); err == nil {
+			return ioutil.WriteFile(InfiniteConfigFile(), []byte(token), os.ModePerm)
+		}
+	}
+	return errors.New("Error creating the config file")
+}
+
+//ReadToken return token in string
+func ReadToken() string {
+	token, _ := ioutil.ReadFile(InfiniteConfigFile())
+	return string(token)
+}
+
+//Logout the user
+func LogoutFile() error {
+	return os.Remove(InfiniteConfigFile())
+}
+
+func GetBodyJSON(resp *http.Response, i interface{}) {
+	if jsonDataFromHTTP, err := ioutil.ReadAll(resp.Body); err == nil {
+		if err := json.Unmarshal([]byte(jsonDataFromHTTP), &i); err != nil {
+			panic(err)
+		}
+	} else {
+		panic(err)
+	}
+}
+
+func authHeaders(user *models.UserLogged) map[string]string {
+	return map[string]string{
+		"AUTH_ID":    fmt.Sprintf("%d", user.ID),
+		"AUTH_TOKEN": user.Token,
+	}
+}
