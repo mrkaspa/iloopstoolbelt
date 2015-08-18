@@ -24,7 +24,7 @@ func main() {
 func setCommands(app *cli.App) {
 	app.Commands = []cli.Command{
 		command.CreateAccountCMD,
-		command.LoginCMD(),
-		command.LogoutCMD(),
+		command.LoginCMD,
+		command.LogoutCMD,
 	}
 }
