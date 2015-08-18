@@ -15,18 +15,9 @@ import (
 
 //LoginCMD command
 var LoginCMD = cli.Command{
-	Name:  "login",
-	Usage: "login with credentials",
-	Flags: []cli.Flag{
-		cli.StringFlag{
-			Name:  "email, e",
-			Usage: "user email",
-		},
-		cli.StringFlag{
-			Name:  "password, p",
-			Usage: "user password",
-		},
-	},
+	Name:   "login",
+	Usage:  "login with credentials",
+	Flags:  []cli.Flag{emailFlag, passwordFlag},
 	Action: loginImpl,
 }
 

@@ -61,12 +61,6 @@ func InfiniteConfigFile() string {
 	return InfiniteFolder() + "/config"
 }
 
-//ReadToken return token in string
-func ReadToken() string {
-	token, _ := ioutil.ReadFile(InfiniteConfigFile())
-	return string(token)
-}
-
 //Logout the user
 func LogoutFile() error {
 	return os.Remove(InfiniteConfigFile())
@@ -79,6 +73,24 @@ func GetBodyJSON(resp *http.Response, i interface{}) {
 		}
 	} else {
 		panic(err)
+	}
+}
+
+func withUserSession(f func(*models.UserLogged) error) error {
+	if user, err := loadUserSession(); err == nil {
+		return f(user)
+	} else {
+		return err
+	}
+}
+
+func loadUserSession() (*models.UserLogged, error) {
+	if data, err := ioutil.ReadFile(InfiniteConfigFile()); err == nil {
+		var user models.UserLogged
+		json.Unmarshal(data, &user)
+		return &user, nil
+	} else {
+		return nil, err
 	}
 }
 
