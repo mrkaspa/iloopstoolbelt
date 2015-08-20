@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -24,7 +25,11 @@ var SSHAddCMD = cli.Command{
 func sshAddImpl(c *cli.Context) {
 	SSHPath := c.String("ssh")
 	name := c.String("name")
-	SSHAdd(name, SSHPath)
+	if err := SSHAdd(name, SSHPath); err == nil {
+		fmt.Println("The ssh key has been added")
+	} else {
+		PrintError(err)
+	}
 }
 
 //SSHAdd new key
@@ -48,5 +53,5 @@ func UploadSSH(name string, SSHPath string, user *models.UserLogged) error {
 	if resp.StatusCode == http.StatusOK {
 		return nil
 	}
-	return errors.New("Could not add the ssh, please add it")
+	return errors.New("Could not add the ssh, please try again")
 }

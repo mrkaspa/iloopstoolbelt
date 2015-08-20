@@ -26,5 +26,7 @@ func setCommands(app *cli.App) {
 		command.CreateAccountCMD,
 		command.LoginCMD,
 		command.LogoutCMD,
+		command.SSHAddCMD,
+		command.ProjectCreateCMD,
 	}
 }

@@ -40,14 +40,16 @@ func CreateAccount(userLogin *models.UserLogin, SSHPath string) error {
 		if helpers.FileExists(SSHPath) {
 			userJSON, _ := json.Marshal(userLogin)
 			resp, _ := client.CallRequest("POST", "/users", bytes.NewReader(userJSON))
-			defer resp.Body.Close()
 			switch resp.StatusCode {
 			case http.StatusOK:
 				var user models.UserLogged
+				defer resp.Body.Close()
 				GetBodyJSON(resp, &user)
 				return UploadSSH("New Account", SSHPath, &user)
 			case http.StatusBadRequest:
 				return errors.New("There was an error creating that account, please try again")
+			default:
+				return nil
 			}
 		} else {
 			return errors.New("SSH File not found")
@@ -55,5 +57,4 @@ func CreateAccount(userLogin *models.UserLogin, SSHPath string) error {
 	} else {
 		return errMap
 	}
-	return nil
 }

@@ -1,6 +1,7 @@
 package command
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/codegangsta/cli"
@@ -14,7 +15,11 @@ var LogoutCMD = cli.Command{
 }
 
 func logoutImpl(c *cli.Context) {
-	Logout()
+	if err := Logout(); err == nil {
+		fmt.Println("Good bye!")
+	} else {
+		PrintError(err)
+	}
 }
 
 //Logout an account

@@ -16,8 +16,9 @@ import (
 )
 
 var (
-	client     utils.Client
-	apiVersion = "v1"
+	client            utils.Client
+	apiVersion        = "v1"
+	DefaultURLProject = "https://github.com/infiniteloopsco/default-project.git"
 )
 
 //Init a http client
@@ -59,6 +60,21 @@ func InfiniteFolder() string {
 //InfiniteConfigFile get path infinite folder
 func InfiniteConfigFile() string {
 	return InfiniteFolder() + "/config"
+}
+
+// IloopProject aasds
+func IloopProject() string {
+	return "iloops.project"
+}
+
+//IDLoopProjectFilePath asdas
+func IDLoopProjectFileConfig(id string) string {
+	return id + "/" + IloopProject()
+}
+
+//IDLoopProjectPackage asdas
+func IDLoopProjectPackage(id string) string {
+	return id + "/package.json"
 }
 
 //Logout the user
