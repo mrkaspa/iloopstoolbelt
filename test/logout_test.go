@@ -1,7 +1,6 @@
 package test
 
 import (
-	"bitbucket.org/kiloops/api/models"
 	"bitbucket.org/kiloops/toolbelt/command"
 	"github.com/mrkaspa/go-helpers"
 	. "github.com/onsi/ginkgo"
@@ -9,11 +8,6 @@ import (
 )
 
 var _ = Describe("Logout", func() {
-
-	var (
-		SSHPath   = "/Users/michelperez/.ssh/id_rsa.pub"
-		userLogin = models.UserLogin{Email: "michel.ingesoft@gmail.com", Password: "h1h1h1h1h1h1"}
-	)
 
 	BeforeEach(func() {
 		cleanDB()

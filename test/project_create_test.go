@@ -3,7 +3,6 @@ package test
 import (
 	"os"
 
-	"bitbucket.org/kiloops/api/models"
 	"bitbucket.org/kiloops/toolbelt/command"
 	"github.com/gosimple/slug"
 	"github.com/mrkaspa/go-helpers"
@@ -12,12 +11,6 @@ import (
 )
 
 var _ = Describe("ProjectCreate", func() {
-
-	var (
-		SSHPath   = "/Users/michelperez/.ssh/id_rsa.pub"
-		userLogin = models.UserLogin{Email: "michel.ingesoft@gmail.com", Password: "h1h1h1h1h1h1"}
-		project   = models.Project{Name: "demo"}
-	)
 
 	BeforeEach(func() {
 		cleanDB()

@@ -10,29 +10,24 @@ import (
 
 var _ = Describe("CreateAccount", func() {
 
-	var SSHPath = "/Users/michelperez/.ssh/id_rsa.pub"
-
 	BeforeEach(func() {
 		cleanDB()
 	})
 
 	It("create a new user", func() {
-		userLogin := models.UserLogin{Email: "michel.ingesoft@gmail.com", Password: "h1h1h1h1h1h1"}
 		err := command.CreateAccount(&userLogin, SSHPath)
 		Expect(err).To(BeNil())
 	})
 
 	It("create a user with a bad email", func() {
-		userLogin := models.UserLogin{Email: "michel.ingesoft", Password: "h1h1h1h1h1h1"}
-		err := command.CreateAccount(&userLogin, SSHPath)
+		userBadLogin := models.UserLogin{Email: "michel.ingesoft", Password: "h1h1h1h1h1h1"}
+		err := command.CreateAccount(&userBadLogin, SSHPath)
 		Expect(err).NotTo(BeNil())
 		errMap := err.(validator.ValidationErrors)
 		Expect(errMap["UserLogin.Email"]).NotTo(BeNil())
 	})
 
 	Context("after creating an user", func() {
-
-		var userLogin = models.UserLogin{Email: "michel.ingesoft@gmail.com", Password: "h1h1h1h1h1h1"}
 
 		BeforeEach(func() {
 			command.CreateAccount(&userLogin, SSHPath)

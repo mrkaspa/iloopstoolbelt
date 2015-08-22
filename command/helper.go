@@ -19,6 +19,7 @@ var (
 	client            utils.Client
 	apiVersion        = "v1"
 	DefaultURLProject = "https://github.com/infiniteloopsco/default-project.git"
+	emptyJSON, _      = json.Marshal(struct{}{})
 )
 
 //Init a http client
@@ -115,4 +116,11 @@ func authHeaders(user *models.UserLogged) map[string]string {
 		"AUTH_ID":    fmt.Sprintf("%d", user.ID),
 		"AUTH_TOKEN": user.Token,
 	}
+}
+
+func debugResponse(resp *http.Response) {
+	contents, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println("*****************")
+	fmt.Println(string(contents))
+	fmt.Println("*****************")
 }

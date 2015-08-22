@@ -28,5 +28,6 @@ func setCommands(app *cli.App) {
 		command.LogoutCMD,
 		command.SSHAddCMD,
 		command.ProjectCreateCMD,
+		command.ProjectListCMD,
 	}
 }
