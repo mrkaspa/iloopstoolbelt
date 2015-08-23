@@ -3,7 +3,6 @@ package command
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 
@@ -47,12 +46,12 @@ func CreateAccount(userLogin *models.UserLogin, SSHPath string) error {
 				GetBodyJSON(resp, &user)
 				return UploadSSH("New Account", SSHPath, &user)
 			case http.StatusBadRequest:
-				return errors.New("There was an error creating that account, please try again")
+				return ErrAccountNotCreated
 			default:
 				return nil
 			}
 		} else {
-			return errors.New("SSH File not found")
+			return ErrSSHFileNotFound
 		}
 	} else {
 		return errMap

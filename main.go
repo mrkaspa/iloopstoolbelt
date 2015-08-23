@@ -29,5 +29,6 @@ func setCommands(app *cli.App) {
 		command.SSHAddCMD,
 		command.ProjectCreateCMD,
 		command.ProjectListCMD,
+		command.ProjectDeleteCMD,
 	}
 }

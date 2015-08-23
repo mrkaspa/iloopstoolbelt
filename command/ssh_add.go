@@ -3,7 +3,6 @@ package command
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -39,7 +38,7 @@ func SSHAdd(name, SSHPath string) error {
 			return UploadSSH(name, SSHPath, user)
 		})
 	} else {
-		return errors.New("SSH File not found")
+		return ErrSSHFileNotFound
 	}
 }
 
@@ -53,5 +52,5 @@ func UploadSSH(name string, SSHPath string, user *models.UserLogged) error {
 	if resp.StatusCode == http.StatusOK {
 		return nil
 	}
-	return errors.New("Could not add the ssh, please try again")
+	return ErrSSHNotCreated
 }

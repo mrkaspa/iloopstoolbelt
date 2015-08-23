@@ -3,7 +3,6 @@ package command
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -46,7 +45,7 @@ func Login(userLogin *models.UserLogin) error {
 			GetBodyJSON(resp, &user)
 			return LoginFile(&user)
 		case http.StatusBadRequest:
-			return errors.New("There was an error with the credentials, please try again")
+			return ErrWithCredentials
 		}
 	} else {
 		return errMap

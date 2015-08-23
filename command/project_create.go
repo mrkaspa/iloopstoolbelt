@@ -3,7 +3,6 @@ package command
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -24,7 +23,7 @@ var ProjectCreateCMD = cli.Command{
 }
 
 func projectCreateImpl(c *cli.Context) {
-	project := models.Project{Name: ""}
+	project := models.Project{Name: c.Args()[0]}
 	if err := ProjectCreate(&project); err == nil {
 		fmt.Println("The project has been created")
 	} else {
@@ -45,7 +44,7 @@ func ProjectCreate(project *models.Project) error {
 				cloneProject(project)
 				return nil
 			case http.StatusBadRequest:
-				return errors.New("There was an error creating that project, please try again")
+				return ErrProjectNotCreated
 			default:
 				return nil
 			}

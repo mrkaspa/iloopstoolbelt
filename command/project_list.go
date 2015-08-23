@@ -18,9 +18,7 @@ var ProjectListCMD = cli.Command{
 }
 
 func projectListImpl(c *cli.Context) {
-	if err := ProjectList(); err == nil {
-		fmt.Println("Good bye!")
-	} else {
+	if err := ProjectList(); err != nil {
 		PrintError(err)
 	}
 }
