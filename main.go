@@ -30,5 +30,9 @@ func setCommands(app *cli.App) {
 		command.ProjectCreateCMD,
 		command.ProjectListCMD,
 		command.ProjectDeleteCMD,
+		command.ProjectLeaveCMD,
+		command.ProjectUserAddCMD,
+		command.ProjectUserRemoveCMD,
+		command.ProjectUserDelegateCMD,
 	}
 }
