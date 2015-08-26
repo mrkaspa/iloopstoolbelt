@@ -3,6 +3,7 @@ package test
 import (
 	"os"
 
+	"bitbucket.org/kiloops/api/gitadmin"
 	"bitbucket.org/kiloops/toolbelt/command"
 	"github.com/gosimple/slug"
 	"github.com/mrkaspa/go-helpers"
@@ -13,9 +14,8 @@ import (
 var _ = Describe("ProjectCreate", func() {
 
 	BeforeEach(func() {
-		cleanDB()
 		command.CreateAccount(&userLogin, SSHPath)
-		command.Login(&userLogin)
+		forceLogin(&userLogin)
 	})
 
 	It("creates a new project", func() {
@@ -24,6 +24,7 @@ var _ = Describe("ProjectCreate", func() {
 		name := slug.Make(project.Name)
 		Expect(helpers.FileExists(name)).To(BeTrue())
 		os.RemoveAll(name)
+		gitadmin.RevertAll(gitadmin.GITOLITEPATH)
 	})
 
 })

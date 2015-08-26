@@ -12,10 +12,9 @@ import (
 var _ = Describe("ProjectUserDelegate", func() {
 
 	BeforeEach(func() {
-		cleanDB()
 		command.CreateAccount(&userLogin, SSHPath)
 		command.CreateAccount(&anotherUserLogin, anotherSSHPath)
-		command.Login(&userLogin)
+		forceLogin(&userLogin)
 		command.ProjectCreate(&project)
 		command.ProjectUserAdd(project.Slug, anotherUserLogin.Email)
 	})

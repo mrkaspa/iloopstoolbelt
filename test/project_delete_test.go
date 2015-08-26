@@ -12,9 +12,8 @@ import (
 var _ = Describe("ProjectDelete", func() {
 
 	BeforeEach(func() {
-		cleanDB()
 		command.CreateAccount(&userLogin, SSHPath)
-		command.Login(&userLogin)
+		forceLogin(&userLogin)
 		command.ProjectCreate(&project)
 	})
 

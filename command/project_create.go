@@ -11,7 +11,6 @@ import (
 	"bitbucket.org/kiloops/api/models"
 
 	"github.com/codegangsta/cli"
-	"github.com/codeskyblue/go-sh"
 	"github.com/gosimple/slug"
 )
 
@@ -56,21 +55,23 @@ func ProjectCreate(project *models.Project) error {
 
 func cloneProject(project *models.Project) {
 	name := slug.Make(project.Name)
-	slug := project.Slug
-	git := project.URLRepo
-	// Clone project
-	fmt.Println("Cloning basic project")
-	sh.Command("git", "clone", DefaultURLProject, name).Run()
-
-	iloopProject, _ := ioutil.ReadFile(IDLoopProjectFileConfig(name))
-	iloopPackage, _ := ioutil.ReadFile(IDLoopProjectPackage(name))
-
-	overrideFile(iloopProject, IDLoopProjectFileConfig(name), name, slug)
-	overrideFile(iloopPackage, IDLoopProjectPackage(name), name, name)
-
-	sh.NewSession().SetDir(name).Command("git", "remote", "set-url", "origin", git).Run()
-
-	fmt.Println("Start to hack :)")
+	os.Mkdir(name, os.ModePerm)
+	// name := slug.Make(project.Name)
+	// slug := project.Slug
+	// git := project.URLRepo
+	// // Clone project
+	// fmt.Println("Cloning basic project")
+	// sh.Command("git", "clone", DefaultURLProject, name).Run()
+	//
+	// iloopProject, _ := ioutil.ReadFile(IDLoopProjectFileConfig(name))
+	// iloopPackage, _ := ioutil.ReadFile(IDLoopProjectPackage(name))
+	//
+	// overrideFile(iloopProject, IDLoopProjectFileConfig(name), name, slug)
+	// overrideFile(iloopPackage, IDLoopProjectPackage(name), name, name)
+	//
+	// sh.NewSession().SetDir(name).Command("git", "remote", "set-url", "origin", git).Run()
+	//
+	// fmt.Println("Start to hack :)")
 }
 
 func overrideFile(file []byte, path string, name string, id string) {

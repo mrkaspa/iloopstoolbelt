@@ -10,10 +10,6 @@ import (
 
 var _ = Describe("CreateAccount", func() {
 
-	BeforeEach(func() {
-		cleanDB()
-	})
-
 	It("create a new user", func() {
 		err := command.CreateAccount(&userLogin, SSHPath)
 		Expect(err).To(BeNil())
