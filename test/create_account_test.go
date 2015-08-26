@@ -11,6 +11,7 @@ import (
 var _ = Describe("CreateAccount", func() {
 
 	It("create a new user", func() {
+		userLogin = models.UserLogin{Email: "michel.ingesoft@gmail.com", Password: "h1h1h1h1h1h1"}
 		err := command.CreateAccount(&userLogin, SSHPath)
 		Expect(err).To(BeNil())
 	})

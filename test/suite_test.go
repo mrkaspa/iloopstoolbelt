@@ -51,7 +51,8 @@ var _ = BeforeEach(func() {
 func cleaner() {
 	cleanDB()
 	gitadmin.RevertAll(gitadmin.GITOLITEPATH)
-	os.RemoveAll(command.InfiniteConfigFile())
+	os.Remove(command.InfiniteConfigFile())
+	os.RemoveAll(command.InfiniteFolder())
 }
 
 func forceLogin(userLogin *models.UserLogin) {
