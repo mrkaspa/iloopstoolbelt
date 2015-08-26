@@ -5,7 +5,6 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
-	"time"
 
 	"bitbucket.org/kiloops/api/endpoint"
 	"bitbucket.org/kiloops/api/gitadmin"
@@ -45,7 +44,7 @@ var _ = AfterSuite(func() {
 })
 
 var _ = BeforeEach(func() {
-	time.Sleep(2 * time.Second)
+	// time.Sleep(2 * time.Second)
 	cleaner()
 })
 
