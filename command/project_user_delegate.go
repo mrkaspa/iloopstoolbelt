@@ -33,7 +33,6 @@ func ProjectUserDelegate(slug, email string) error {
 		resp, _ := client.CallRequestWithHeaders("PUT", "/projects/"+slug+"/delegate/"+email, bytes.NewReader(emptyJSON), authHeaders(user))
 		switch resp.StatusCode {
 		case http.StatusOK:
-			return nil
 		case http.StatusBadRequest:
 			return ErrProjectUserNotDelegated
 		case http.StatusNotFound:

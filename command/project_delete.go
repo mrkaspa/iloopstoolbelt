@@ -31,7 +31,6 @@ func ProjectDelete(slug string) error {
 		resp, _ := client.CallRequestWithHeaders("DELETE", "/projects/"+slug, bytes.NewReader(emptyJSON), authHeaders(user))
 		switch resp.StatusCode {
 		case http.StatusOK:
-			return nil
 		case http.StatusBadRequest:
 			return ErrProjectNotDeleted
 		case http.StatusForbidden:

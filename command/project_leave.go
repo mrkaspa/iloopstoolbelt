@@ -31,7 +31,6 @@ func ProjectLeave(slug string) error {
 		resp, _ := client.CallRequestWithHeaders("PUT", "/projects/"+slug+"/leave", bytes.NewReader(emptyJSON), authHeaders(user))
 		switch resp.StatusCode {
 		case http.StatusOK:
-			return nil
 		case http.StatusBadRequest:
 			return ErrProjectNotLeft
 		case http.StatusNotFound:

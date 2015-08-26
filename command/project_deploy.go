@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/codegangsta/cli"
+	"github.com/codeskyblue/go-sh"
 )
 
 //ProjectDeployCMD command
@@ -23,5 +24,5 @@ func projectDeployImpl(c *cli.Context) {
 
 //ProjectDeploy on ILoops servers
 func ProjectDeploy() error {
-	return nil
+	return sh.NewSession().Command("git", "add", "-A").Command("git", "commit", "-m", "deploy repo").Command("git", "push", "origin", "master").Run()
 }

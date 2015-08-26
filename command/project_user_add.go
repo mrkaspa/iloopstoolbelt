@@ -33,7 +33,6 @@ func ProjectUserAdd(slug, email string) error {
 		resp, _ := client.CallRequestWithHeaders("PUT", "/projects/"+slug+"/add/"+email, bytes.NewReader(emptyJSON), authHeaders(user))
 		switch resp.StatusCode {
 		case http.StatusOK:
-			return nil
 		case http.StatusBadRequest:
 			return ErrProjectUserNotAdded
 		case http.StatusNotFound:

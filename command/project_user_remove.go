@@ -33,7 +33,6 @@ func ProjectUserRemove(slug, email string) error {
 		resp, _ := client.CallRequestWithHeaders("DELETE", "/projects/"+slug+"/remove/"+email, bytes.NewReader(emptyJSON), authHeaders(user))
 		switch resp.StatusCode {
 		case http.StatusOK:
-			return nil
 		case http.StatusBadRequest:
 			return ErrProjectUserNotRemoved
 		case http.StatusNotFound:

@@ -11,6 +11,7 @@ import (
 	"bitbucket.org/kiloops/api/models"
 
 	"github.com/codegangsta/cli"
+	"github.com/codeskyblue/go-sh"
 	"github.com/gosimple/slug"
 )
 
@@ -24,7 +25,7 @@ var ProjectCreateCMD = cli.Command{
 func projectCreateImpl(c *cli.Context) {
 	project := models.Project{Name: c.Args()[0]}
 	if err := ProjectCreate(&project); err == nil {
-		fmt.Println("The project has been created")
+		fmt.Println("Start to hack :)")
 	} else {
 		PrintError(err)
 	}
@@ -40,7 +41,7 @@ func ProjectCreate(project *models.Project) error {
 			case http.StatusOK:
 				defer resp.Body.Close()
 				GetBodyJSON(resp, project)
-				cloneProject(project)
+				initProject(project)
 				return nil
 			case http.StatusBadRequest:
 				return ErrProjectNotCreated
@@ -53,25 +54,22 @@ func ProjectCreate(project *models.Project) error {
 	})
 }
 
-func cloneProject(project *models.Project) {
+func initProject(project *models.Project) {
 	name := slug.Make(project.Name)
-	os.Mkdir(name, os.ModePerm)
-	// name := slug.Make(project.Name)
-	// slug := project.Slug
-	// git := project.URLRepo
-	// // Clone project
-	// fmt.Println("Cloning basic project")
-	// sh.Command("git", "clone", DefaultURLProject, name).Run()
-	//
-	// iloopProject, _ := ioutil.ReadFile(IDLoopProjectFileConfig(name))
-	// iloopPackage, _ := ioutil.ReadFile(IDLoopProjectPackage(name))
-	//
-	// overrideFile(iloopProject, IDLoopProjectFileConfig(name), name, slug)
-	// overrideFile(iloopPackage, IDLoopProjectPackage(name), name, name)
-	//
-	// sh.NewSession().SetDir(name).Command("git", "remote", "set-url", "origin", git).Run()
-	//
-	// fmt.Println("Start to hack :)")
+	slug := project.Slug
+	git := project.URLRepo
+	// Clone project
+	fmt.Println("Cloning basic project")
+	sh.Command("git", "clone", DefaultURLProject, name).Run()
+
+	iloopProject, _ := ioutil.ReadFile(IDLoopProjectFileConfig(name))
+	iloopPackage, _ := ioutil.ReadFile(IDLoopProjectPackage(name))
+
+	overrideFile(iloopProject, IDLoopProjectFileConfig(name), name, slug)
+	overrideFile(iloopPackage, IDLoopProjectPackage(name), name, name)
+
+	sh.NewSession().SetDir(name).Command("git", "remote", "set-url", "origin", git).Run()
+
 }
 
 func overrideFile(file []byte, path string, name string, id string) {
