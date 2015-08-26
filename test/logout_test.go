@@ -10,7 +10,7 @@ import (
 var _ = Describe("Logout", func() {
 
 	BeforeEach(func() {
-		cleanDB()
+		userLogin = defaultUser()
 		command.CreateAccount(&userLogin, SSHPath)
 		command.Login(&userLogin)
 	})

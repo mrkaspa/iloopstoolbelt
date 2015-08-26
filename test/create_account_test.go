@@ -11,7 +11,7 @@ import (
 var _ = Describe("CreateAccount", func() {
 
 	It("create a new user", func() {
-		userLogin = models.UserLogin{Email: "michel.ingesoft@gmail.com", Password: "h1h1h1h1h1h1"}
+		userLogin = defaultUser()
 		err := command.CreateAccount(&userLogin, SSHPath)
 		Expect(err).To(BeNil())
 	})
@@ -27,6 +27,7 @@ var _ = Describe("CreateAccount", func() {
 	Context("after creating an user", func() {
 
 		BeforeEach(func() {
+			userLogin = defaultUser()
 			command.CreateAccount(&userLogin, SSHPath)
 		})
 

@@ -12,6 +12,8 @@ import (
 var _ = Describe("ProjectList", func() {
 
 	BeforeEach(func() {
+		userLogin = defaultUser()
+		project = defaultProject()
 		command.CreateAccount(&userLogin, SSHPath)
 		forceLogin(&userLogin)
 		command.ProjectCreate(&project)

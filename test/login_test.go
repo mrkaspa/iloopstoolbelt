@@ -10,6 +10,7 @@ import (
 var _ = Describe("Login", func() {
 
 	BeforeEach(func() {
+		userLogin = defaultUser()
 		command.CreateAccount(&userLogin, SSHPath)
 	})
 

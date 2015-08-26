@@ -9,6 +9,7 @@ import (
 var _ = Describe("SSHAdd", func() {
 
 	BeforeEach(func() {
+		userLogin = defaultUser()
 		command.CreateAccount(&userLogin, SSHPath)
 		forceLogin(&userLogin)
 	})

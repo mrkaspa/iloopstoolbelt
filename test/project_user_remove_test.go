@@ -12,6 +12,9 @@ import (
 var _ = Describe("ProjectUserRemove", func() {
 
 	BeforeEach(func() {
+		userLogin = defaultUser()
+		anotherUserLogin = anotherUser()
+		project = defaultProject()
 		command.CreateAccount(&userLogin, SSHPath)
 		command.CreateAccount(&anotherUserLogin, anotherSSHPath)
 		forceLogin(&userLogin)

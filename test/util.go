@@ -10,6 +10,6 @@ func anotherUser() models.UserLogin {
 	return models.UserLogin{Email: "angelbotto@gmail.com", Password: "h1h1h1h1h1h1"}
 }
 
-func initProject() models.Project {
+func defaultProject() models.Project {
 	return models.Project{Name: "demo"}
 }
