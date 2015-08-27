@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	URL = "http://localhost:8080"
+	URL = "http://api.infiniteloops.co:8080"
 )
 
 func main() {
