@@ -33,13 +33,12 @@ func sshAddImpl(c *cli.Context) {
 
 //SSHAdd new key
 func SSHAdd(name, SSHPath string) error {
-	if helpers.FileExists(SSHPath) {
-		return withUserSession(func(user *models.UserLogged) error {
-			return UploadSSH(name, SSHPath, user)
-		})
-	} else {
+	if !helpers.FileExists(SSHPath) {
 		return ErrSSHFileNotFound
 	}
+	return withUserSession(func(user *models.UserLogged) error {
+		return UploadSSH(name, SSHPath, user)
+	})
 }
 
 //UploadSSH key for the current user

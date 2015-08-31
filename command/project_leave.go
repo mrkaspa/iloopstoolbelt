@@ -1,7 +1,6 @@
 package command
 
 import (
-	"bytes"
 	"fmt"
 	"net/http"
 
@@ -28,7 +27,7 @@ func projectLeaveImpl(c *cli.Context) {
 //ProjectUserAdd an account
 func ProjectLeave(slug string) error {
 	return withUserSession(func(user *models.UserLogged) error {
-		resp, _ := client.CallRequestWithHeaders("PUT", "/projects/"+slug+"/leave", bytes.NewReader(emptyJSON), authHeaders(user))
+		resp, _ := client.CallRequestNoBodytWithHeaders("PUT", "/projects/"+slug+"/leave", authHeaders(user))
 		switch resp.StatusCode {
 		case http.StatusOK:
 		case http.StatusBadRequest:

@@ -1,7 +1,6 @@
 package command
 
 import (
-	"bytes"
 	"fmt"
 	"net/http"
 
@@ -26,7 +25,7 @@ func projectListImpl(c *cli.Context) {
 //ProjectList an account
 func ProjectList() error {
 	return withUserSession(func(user *models.UserLogged) error {
-		resp, _ := client.CallRequestWithHeaders("GET", "/projects", bytes.NewReader(emptyJSON), authHeaders(user))
+		resp, _ := client.CallRequestNoBodytWithHeaders("GET", "/projects", authHeaders(user))
 		var userProjects []models.UsersProjects
 		switch resp.StatusCode {
 		case http.StatusOK:
@@ -39,6 +38,6 @@ func ProjectList() error {
 
 func printProjects(userProjects *[]models.UsersProjects) {
 	for i, v := range *userProjects {
-		fmt.Printf("%d. %s", i, v.Project.Name)
+		fmt.Printf("%d. %s => &s", i, v.Project.Name, v.Project.URLRepo)
 	}
 }

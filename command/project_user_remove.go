@@ -1,7 +1,6 @@
 package command
 
 import (
-	"bytes"
 	"fmt"
 	"net/http"
 
@@ -30,7 +29,7 @@ func projectUserRemoveImpl(c *cli.Context) {
 //ProjectUserRemove an account
 func ProjectUserRemove(slug, email string) error {
 	return withUserSession(func(user *models.UserLogged) error {
-		resp, _ := client.CallRequestWithHeaders("DELETE", "/projects/"+slug+"/remove/"+email, bytes.NewReader(emptyJSON), authHeaders(user))
+		resp, _ := client.CallRequestNoBodytWithHeaders("DELETE", "/projects/"+slug+"/remove/"+email, authHeaders(user))
 		switch resp.StatusCode {
 		case http.StatusOK:
 		case http.StatusBadRequest:

@@ -63,13 +63,10 @@ func initProject(project *models.Project) error {
 	if err != nil {
 		return err
 	}
-
 	iloopProject, _ := ioutil.ReadFile(IDLoopProjectFileConfig(name))
 	iloopPackage, _ := ioutil.ReadFile(IDLoopProjectPackage(name))
-
 	overrideFile(iloopProject, IDLoopProjectFileConfig(name), name, slug)
 	overrideFile(iloopPackage, IDLoopProjectPackage(name), name, name)
-
 	return sh.NewSession().SetDir(name).Command("git", "remote", "set-url", "origin", git).Run()
 
 }

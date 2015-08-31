@@ -1,7 +1,6 @@
 package command
 
 import (
-	"bytes"
 	"fmt"
 	"net/http"
 
@@ -30,7 +29,7 @@ func projectUserAddImpl(c *cli.Context) {
 //ProjectUserAdd an account
 func ProjectUserAdd(slug, email string) error {
 	return withUserSession(func(user *models.UserLogged) error {
-		resp, _ := client.CallRequestWithHeaders("PUT", "/projects/"+slug+"/add/"+email, bytes.NewReader(emptyJSON), authHeaders(user))
+		resp, _ := client.CallRequestNoBodytWithHeaders("PUT", "/projects/"+slug+"/add/"+email, authHeaders(user))
 		switch resp.StatusCode {
 		case http.StatusOK:
 		case http.StatusBadRequest:

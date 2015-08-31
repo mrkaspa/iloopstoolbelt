@@ -19,7 +19,6 @@ var (
 	client            utils.Client
 	apiVersion        = "v1"
 	DefaultURLProject = "https://github.com/infiniteloopsco/default-project.git"
-	emptyJSON, _      = json.Marshal(struct{}{})
 )
 
 //Init a http client
@@ -107,7 +106,7 @@ func loadUserSession() (*models.UserLogged, error) {
 		json.Unmarshal(data, &user)
 		return &user, nil
 	} else {
-		return nil, err
+		return nil, ErrNoActiveSession
 	}
 }
 

@@ -38,9 +38,9 @@ func Login(userLogin *models.UserLogin) error {
 	if valid, errMap := models.ValidStruct(userLogin); valid {
 		userJSON, _ := json.Marshal(userLogin)
 		resp, _ := client.CallRequest("POST", "/users/login", bytes.NewReader(userJSON))
-		defer resp.Body.Close()
 		switch resp.StatusCode {
 		case http.StatusOK:
+			defer resp.Body.Close()
 			var user models.UserLogged
 			GetBodyJSON(resp, &user)
 			return LoginFile(&user)
@@ -55,14 +55,12 @@ func Login(userLogin *models.UserLogin) error {
 
 //LoginFile configuration file
 func LoginFile(user *models.UserLogged) error {
-	if err := os.Mkdir(InfiniteFolder(), os.ModePerm); err == nil || os.IsExist(err) {
-		if _, err := os.Create(InfiniteConfigFile()); err == nil {
-			authJSON, _ := json.Marshal(user)
-			return ioutil.WriteFile(InfiniteConfigFile(), []byte(authJSON), os.ModePerm)
-		} else {
-			return err
-		}
-	} else {
+	if err := os.Mkdir(InfiniteFolder(), os.ModePerm); err != nil && !os.IsExist(err) {
 		return err
 	}
+	if _, err := os.Create(InfiniteConfigFile()); err != nil {
+		return err
+	}
+	authJSON, _ := json.Marshal(user)
+	return ioutil.WriteFile(InfiniteConfigFile(), []byte(authJSON), os.ModePerm)
 }
