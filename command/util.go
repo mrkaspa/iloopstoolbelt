@@ -82,16 +82,6 @@ func LogoutFile() error {
 	return os.Remove(InfiniteConfigFile())
 }
 
-func GetBodyJSON(resp *http.Response, i interface{}) {
-	if jsonDataFromHTTP, err := ioutil.ReadAll(resp.Body); err == nil {
-		if err := json.Unmarshal([]byte(jsonDataFromHTTP), &i); err != nil {
-			panic(err)
-		}
-	} else {
-		panic(err)
-	}
-}
-
 func withUserSession(f func(*models.UserLogged) error) error {
 	if user, err := loadUserSession(); err == nil {
 		return f(user)

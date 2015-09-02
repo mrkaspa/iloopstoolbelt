@@ -25,14 +25,14 @@ func projectListImpl(c *cli.Context) {
 //ProjectList an account
 func ProjectList() error {
 	return withUserSession(func(user *models.UserLogged) error {
-		resp, _ := client.CallRequestNoBodytWithHeaders("GET", "/projects", authHeaders(user))
 		var userProjects []models.UsersProjects
-		switch resp.StatusCode {
-		case http.StatusOK:
-			GetBodyJSON(resp, &userProjects)
-			printProjects(&userProjects)
-		}
-		return nil
+		return client.CallRequestNoBodytWithHeaders("GET", "/projects", authHeaders(user)).WithResponseJSON(&userProjects, func(resp *http.Response) error {
+			switch resp.StatusCode {
+			case http.StatusOK:
+				printProjects(&userProjects)
+			}
+			return nil
+		})
 	})
 }
 

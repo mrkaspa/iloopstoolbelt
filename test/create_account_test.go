@@ -8,7 +8,7 @@ import (
 	"gopkg.in/bluesuncorp/validator.v6"
 )
 
-var _ = Describe("CreateAccount", func() {
+var _ = FDescribe("CreateAccount", func() {
 
 	It("create a new user", func() {
 		userLogin = defaultUser()

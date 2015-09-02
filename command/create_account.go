@@ -41,25 +41,22 @@ func createAccountImpl(c *cli.Context) {
 
 //CreateAccount new account
 func CreateAccount(userLogin *models.UserLogin, SSHPath string) error {
-	if valid, errMap := models.ValidStruct(userLogin); valid {
-		if helpers.FileExists(SSHPath) {
-			userJSON, _ := json.Marshal(userLogin)
-			resp, _ := client.CallRequest("POST", "/users", bytes.NewReader(userJSON))
-			switch resp.StatusCode {
-			case http.StatusOK:
-				var user models.UserLogged
-				defer resp.Body.Close()
-				GetBodyJSON(resp, &user)
-				return UploadSSH("New Account", SSHPath, &user)
-			case http.StatusBadRequest:
-				return ErrAccountNotCreated
-			default:
-				return nil
-			}
-		} else {
-			return ErrSSHFileNotFound
-		}
-	} else {
+	if valid, errMap := models.ValidStruct(userLogin); !valid {
 		return errMap
 	}
+	if !helpers.FileExists(SSHPath) {
+		return ErrSSHFileNotFound
+	}
+	userJSON, _ := json.Marshal(userLogin)
+	var user models.UserLogged
+	return client.CallRequest("POST", "/users", bytes.NewReader(userJSON)).WithResponseJSON(&user, func(resp *http.Response) error {
+		switch resp.StatusCode {
+		case http.StatusOK:
+			return UploadSSH("New Account", SSHPath, &user)
+		case http.StatusBadRequest:
+			return ErrAccountNotCreated
+		default:
+			return nil
+		}
+	})
 }

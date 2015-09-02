@@ -47,9 +47,10 @@ func UploadSSH(name string, SSHPath string, user *models.UserLogged) error {
 	content := string(SSHContent)
 	ssh := models.SSH{Name: name, PublicKey: content}
 	sshJSON, _ := json.Marshal(ssh)
-	resp, _ := client.CallRequestWithHeaders("POST", "/ssh", bytes.NewReader(sshJSON), authHeaders(user))
-	if resp.StatusCode == http.StatusOK {
+	return client.CallRequestWithHeaders("POST", "/ssh", bytes.NewReader(sshJSON), authHeaders(user)).WithResponse(func(resp *http.Response) error {
+		if resp.StatusCode != http.StatusOK {
+			return ErrSSHNotCreated
+		}
 		return nil
-	}
-	return ErrSSHNotCreated
+	})
 }

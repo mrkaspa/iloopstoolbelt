@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"net/http/httptest"
+	"net/url"
 	"os"
 	"testing"
 
@@ -10,6 +11,8 @@ import (
 	"bitbucket.org/kiloops/api/gitadmin"
 	"bitbucket.org/kiloops/api/models"
 	"bitbucket.org/kiloops/toolbelt/command"
+	gEndpoint "github.com/infiniteloopsco/guartz/endpoint"
+	gModels "github.com/infiniteloopsco/guartz/models"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
@@ -18,7 +21,8 @@ import (
 )
 
 var (
-	ts *httptest.Server
+	ts      *httptest.Server
+	gServer *httptest.Server
 )
 
 func TestClient(t *testing.T) {
@@ -30,16 +34,25 @@ func TestClient(t *testing.T) {
 var _ = BeforeSuite(func() {
 	initEnv()
 	models.InitDB()
+	gModels.InitDB()
 	gitadmin.InitVars()
 	gitadmin.InitGitAdmin()
+	gModels.InitCron()
+	cleanDB()
 	ts = httptest.NewServer(endpoint.GetMainEngine())
+	gServer = httptest.NewServer(gEndpoint.GetMainEngine())
+	gURL, _ := url.Parse(gServer.URL)
+	os.Setenv("GUARTZ_HOST", gURL.Host)
+	models.InitGuartzClient()
 	command.Init(ts.URL)
 	cleaner()
 })
 
 var _ = AfterSuite(func() {
 	models.Gdb.Close()
+	gModels.Gdb.Close()
 	ts.Close()
+	gServer.Close()
 	gitadmin.FinishGitAdmin()
 })
 
@@ -68,6 +81,8 @@ func cleanDB() {
 	models.Gdb.Delete(models.Project{})
 	models.Gdb.Delete(models.SSH{})
 	models.Gdb.Delete(models.User{})
+	gModels.Gdb.Delete(gModels.Execution{})
+	gModels.Gdb.Delete(gModels.Task{})
 }
 
 func initEnv() {

@@ -29,16 +29,17 @@ func projectUserDelegateImpl(c *cli.Context) {
 //ProjectUserDelegate an account
 func ProjectUserDelegate(slug, email string) error {
 	return withUserSession(func(user *models.UserLogged) error {
-		resp, _ := client.CallRequestNoBodytWithHeaders("PUT", "/projects/"+slug+"/delegate/"+email, authHeaders(user))
-		switch resp.StatusCode {
-		case http.StatusOK:
-		case http.StatusBadRequest:
-			return ErrProjectUserNotDelegated
-		case http.StatusNotFound:
-			return ErrProjectOrUserNotFound
-		case http.StatusForbidden:
-			return ErrProjectNotAccess
-		}
-		return nil
+		return client.CallRequestNoBodytWithHeaders("PUT", "/projects/"+slug+"/delegate/"+email, authHeaders(user)).WithResponse(func(resp *http.Response) error {
+			switch resp.StatusCode {
+			case http.StatusBadRequest:
+				return ErrProjectUserNotDelegated
+			case http.StatusNotFound:
+				return ErrProjectOrUserNotFound
+			case http.StatusForbidden:
+				return ErrProjectNotAccess
+			default:
+				return nil
+			}
+		})
 	})
 }

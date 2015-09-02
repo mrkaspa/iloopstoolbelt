@@ -41,22 +41,21 @@ func loginImpl(c *cli.Context) {
 //Login an user
 func Login(userLogin *models.UserLogin) error {
 	Logout()
-	if valid, errMap := models.ValidStruct(userLogin); valid {
-		userJSON, _ := json.Marshal(userLogin)
-		resp, _ := client.CallRequest("POST", "/users/login", bytes.NewReader(userJSON))
+	if valid, errMap := models.ValidStruct(userLogin); !valid {
+		return errMap
+	}
+	userJSON, _ := json.Marshal(userLogin)
+	var user models.UserLogged
+	return client.CallRequest("POST", "/users/login", bytes.NewReader(userJSON)).WithResponseJSON(&user, func(resp *http.Response) error {
 		switch resp.StatusCode {
 		case http.StatusOK:
-			defer resp.Body.Close()
-			var user models.UserLogged
-			GetBodyJSON(resp, &user)
 			return LoginFile(&user)
 		case http.StatusBadRequest:
 			return ErrWithCredentials
+		default:
+			return nil
 		}
-	} else {
-		return errMap
-	}
-	return nil
+	})
 }
 
 //LoginFile configuration file

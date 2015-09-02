@@ -27,16 +27,17 @@ func projectDeleteImpl(c *cli.Context) {
 //ProjectDelete an account
 func ProjectDelete(slug string) error {
 	return withUserSession(func(user *models.UserLogged) error {
-		resp, _ := client.CallRequestNoBodytWithHeaders("DELETE", "/projects/"+slug, authHeaders(user))
-		switch resp.StatusCode {
-		case http.StatusOK:
-		case http.StatusBadRequest:
-			return ErrProjectNotDeleted
-		case http.StatusForbidden:
-			return ErrProjectNotAccess
-		case http.StatusNotFound:
-			return ErrProjectNotFound
-		}
-		return nil
+		return client.CallRequestNoBodytWithHeaders("DELETE", "/projects/"+slug, authHeaders(user)).WithResponse(func(resp *http.Response) error {
+			switch resp.StatusCode {
+			case http.StatusBadRequest:
+				return ErrProjectNotDeleted
+			case http.StatusForbidden:
+				return ErrProjectNotAccess
+			case http.StatusNotFound:
+				return ErrProjectNotFound
+			default:
+				return nil
+			}
+		})
 	})
 }

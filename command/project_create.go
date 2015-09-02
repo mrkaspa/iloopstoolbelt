@@ -39,22 +39,20 @@ func ProjectCreate(project *models.Project) error {
 		return ErrProjectDirectoryAlreadyExists
 	}
 	return withUserSession(func(user *models.UserLogged) error {
-		if valid, errMap := models.ValidStruct(project); valid {
-			projectJSON, _ := json.Marshal(project)
-			resp, _ := client.CallRequestWithHeaders("POST", "/projects", bytes.NewReader(projectJSON), authHeaders(user))
+		if valid, errMap := models.ValidStruct(project); !valid {
+			return errMap
+		}
+		projectJSON, _ := json.Marshal(project)
+		return client.CallRequestWithHeaders("POST", "/projects", bytes.NewReader(projectJSON), authHeaders(user)).WithResponseJSON(&project, func(resp *http.Response) error {
 			switch resp.StatusCode {
 			case http.StatusOK:
-				defer resp.Body.Close()
-				GetBodyJSON(resp, project)
 				return initProject(project, name)
 			case http.StatusBadRequest:
 				return ErrProjectNotCreated
 			default:
 				return nil
 			}
-		} else {
-			return errMap
-		}
+		})
 	})
 }
 

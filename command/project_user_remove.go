@@ -29,16 +29,17 @@ func projectUserRemoveImpl(c *cli.Context) {
 //ProjectUserRemove an account
 func ProjectUserRemove(slug, email string) error {
 	return withUserSession(func(user *models.UserLogged) error {
-		resp, _ := client.CallRequestNoBodytWithHeaders("DELETE", "/projects/"+slug+"/remove/"+email, authHeaders(user))
-		switch resp.StatusCode {
-		case http.StatusOK:
-		case http.StatusBadRequest:
-			return ErrProjectUserNotRemoved
-		case http.StatusNotFound:
-			return ErrProjectOrUserNotFound
-		case http.StatusForbidden:
-			return ErrProjectNotAccess
-		}
-		return nil
+		return client.CallRequestNoBodytWithHeaders("DELETE", "/projects/"+slug+"/remove/"+email, authHeaders(user)).WithResponse(func(resp *http.Response) error {
+			switch resp.StatusCode {
+			case http.StatusBadRequest:
+				return ErrProjectUserNotRemoved
+			case http.StatusNotFound:
+				return ErrProjectOrUserNotFound
+			case http.StatusForbidden:
+				return ErrProjectNotAccess
+			default:
+				return nil
+			}
+		})
 	})
 }

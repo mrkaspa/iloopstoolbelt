@@ -24,19 +24,20 @@ func projectLeaveImpl(c *cli.Context) {
 	}
 }
 
-//ProjectUserAdd an account
+//ProjectLeave a project
 func ProjectLeave(slug string) error {
 	return withUserSession(func(user *models.UserLogged) error {
-		resp, _ := client.CallRequestNoBodytWithHeaders("PUT", "/projects/"+slug+"/leave", authHeaders(user))
-		switch resp.StatusCode {
-		case http.StatusOK:
-		case http.StatusBadRequest:
-			return ErrProjectNotLeft
-		case http.StatusNotFound:
-			return ErrProjectNotFound
-		case http.StatusForbidden:
-			return ErrProjectNotAccess
-		}
-		return nil
+		return client.CallRequestNoBodytWithHeaders("PUT", "/projects/"+slug+"/leave", authHeaders(user)).WithResponse(func(resp *http.Response) error {
+			switch resp.StatusCode {
+			case http.StatusBadRequest:
+				return ErrProjectNotLeft
+			case http.StatusNotFound:
+				return ErrProjectNotFound
+			case http.StatusForbidden:
+				return ErrProjectNotAccess
+			default:
+				return nil
+			}
+		})
 	})
 }
