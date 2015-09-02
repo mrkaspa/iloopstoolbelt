@@ -13,6 +13,7 @@ import (
 	"github.com/codegangsta/cli"
 	"github.com/codeskyblue/go-sh"
 	"github.com/gosimple/slug"
+	"github.com/mrkaspa/go-helpers"
 )
 
 //ProjectCreateCMD command
@@ -33,6 +34,10 @@ func projectCreateImpl(c *cli.Context) {
 
 //ProjectCreate new
 func ProjectCreate(project *models.Project) error {
+	name := slug.Make(project.Name)
+	if helpers.FileExists(name) {
+		return ErrProjectDirectoryAlreadyExists
+	}
 	return withUserSession(func(user *models.UserLogged) error {
 		if valid, errMap := models.ValidStruct(project); valid {
 			projectJSON, _ := json.Marshal(project)
@@ -41,7 +46,7 @@ func ProjectCreate(project *models.Project) error {
 			case http.StatusOK:
 				defer resp.Body.Close()
 				GetBodyJSON(resp, project)
-				return initProject(project)
+				return initProject(project, name)
 			case http.StatusBadRequest:
 				return ErrProjectNotCreated
 			default:
@@ -53,8 +58,7 @@ func ProjectCreate(project *models.Project) error {
 	})
 }
 
-func initProject(project *models.Project) error {
-	name := slug.Make(project.Name)
+func initProject(project *models.Project, name string) error {
 	slug := project.Slug
 	git := project.URLRepo
 	// Clone project

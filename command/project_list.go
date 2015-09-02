@@ -38,6 +38,6 @@ func ProjectList() error {
 
 func printProjects(userProjects *[]models.UsersProjects) {
 	for i, v := range *userProjects {
-		fmt.Printf("%d. %s => &s", i, v.Project.Name, v.Project.URLRepo)
+		fmt.Printf("%d. %s => %s\n", i+1, v.Project.Name, v.Project.URLRepo)
 	}
 }

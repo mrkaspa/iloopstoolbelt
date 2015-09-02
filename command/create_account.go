@@ -26,6 +26,12 @@ func createAccountImpl(c *cli.Context) {
 		Password: c.String("password"),
 	}
 	SSHPath := c.String("ssh")
+	for userLogin.Password == "" {
+		fmt.Println("Enter password: ")
+		var in string
+		fmt.Scanln(&in)
+		userLogin.Password = in
+	}
 	if err := CreateAccount(&userLogin, SSHPath); err == nil {
 		fmt.Println("Your user account has been created, try logging in")
 	} else {
