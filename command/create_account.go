@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"bitbucket.org/kiloops/api/endpoint"
 	"bitbucket.org/kiloops/api/models"
+	"bitbucket.org/kiloops/api/utils"
 
 	"github.com/codegangsta/cli"
 	"github.com/mrkaspa/go-helpers"
@@ -49,14 +51,25 @@ func CreateAccount(userLogin *models.UserLogin, SSHPath string) error {
 	}
 	userJSON, _ := json.Marshal(userLogin)
 	var user models.UserLogged
-	return client.CallRequest("POST", "/users", bytes.NewReader(userJSON)).WithResponseJSON(&user, func(resp *http.Response) error {
-		switch resp.StatusCode {
-		case http.StatusOK:
-			return UploadSSH("New Account", SSHPath, &user)
-		case http.StatusBadRequest:
-			return ErrAccountNotCreated
-		default:
-			return nil
-		}
+	var jError endpoint.JSONError
+	return client.CallRequest("POST", "/users", bytes.NewReader(userJSON)).Solve(utils.MapExec{
+		http.StatusOK: utils.InfoExec{
+			&user,
+			func(resp *http.Response) error {
+				return UploadSSH("New Account", SSHPath, &user)
+			},
+		},
+		http.StatusConflict: utils.InfoExec{
+			&jError,
+			func(resp *http.Response) error {
+				return jError
+			},
+		},
+		utils.Default: utils.InfoExec{
+			nil,
+			func(resp *http.Response) error {
+				return ErrAccountNotCreated
+			},
+		},
 	})
 }

@@ -31,7 +31,7 @@ func ProjectUserAdd(slug, email string) error {
 	return withUserSession(func(user *models.UserLogged) error {
 		return client.CallRequestNoBodytWithHeaders("PUT", "/projects/"+slug+"/add/"+email, authHeaders(user)).WithResponse(func(resp *http.Response) error {
 			switch resp.StatusCode {
-			case http.StatusBadRequest:
+			case http.StatusConflict:
 				return ErrProjectUserNotAdded
 			case http.StatusNotFound:
 				return ErrProjectOrUserNotFound

@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"os"
 
+	"bitbucket.org/kiloops/api/endpoint"
 	"bitbucket.org/kiloops/api/models"
+	"bitbucket.org/kiloops/api/utils"
 
 	"github.com/codegangsta/cli"
 	"github.com/codeskyblue/go-sh"
@@ -43,15 +45,26 @@ func ProjectCreate(project *models.Project) error {
 			return errMap
 		}
 		projectJSON, _ := json.Marshal(project)
-		return client.CallRequestWithHeaders("POST", "/projects", bytes.NewReader(projectJSON), authHeaders(user)).WithResponseJSON(&project, func(resp *http.Response) error {
-			switch resp.StatusCode {
-			case http.StatusOK:
-				return initProject(project, name)
-			case http.StatusBadRequest:
-				return ErrProjectNotCreated
-			default:
-				return nil
-			}
+		var jError endpoint.JSONError
+		return client.CallRequestWithHeaders("POST", "/projects", bytes.NewReader(projectJSON), authHeaders(user)).Solve(utils.MapExec{
+			http.StatusOK: utils.InfoExec{
+				&project,
+				func(resp *http.Response) error {
+					return initProject(project, name)
+				},
+			},
+			http.StatusConflict: utils.InfoExec{
+				&jError,
+				func(resp *http.Response) error {
+					return jError
+				},
+			},
+			utils.Default: utils.InfoExec{
+				nil,
+				func(resp *http.Response) error {
+					return ErrProjectNotCreated
+				},
+			},
 		})
 	})
 }

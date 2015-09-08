@@ -8,7 +8,9 @@ import (
 	"net/http"
 	"os"
 
+	"bitbucket.org/kiloops/api/endpoint"
 	"bitbucket.org/kiloops/api/models"
+	"bitbucket.org/kiloops/api/utils"
 	"github.com/codegangsta/cli"
 )
 
@@ -46,15 +48,26 @@ func Login(userLogin *models.UserLogin) error {
 	}
 	userJSON, _ := json.Marshal(userLogin)
 	var user models.UserLogged
-	return client.CallRequest("POST", "/users/login", bytes.NewReader(userJSON)).WithResponseJSON(&user, func(resp *http.Response) error {
-		switch resp.StatusCode {
-		case http.StatusOK:
-			return LoginFile(&user)
-		case http.StatusBadRequest:
-			return ErrWithCredentials
-		default:
-			return nil
-		}
+	var jError endpoint.JSONError
+	return client.CallRequest("POST", "/users/login", bytes.NewReader(userJSON)).Solve(utils.MapExec{
+		http.StatusOK: utils.InfoExec{
+			&user,
+			func(resp *http.Response) error {
+				return LoginFile(&user)
+			},
+		},
+		http.StatusConflict: utils.InfoExec{
+			&jError,
+			func(resp *http.Response) error {
+				return jError
+			},
+		},
+		utils.Default: utils.InfoExec{
+			nil,
+			func(resp *http.Response) error {
+				return ErrWithCredentials
+			},
+		},
 	})
 }
 

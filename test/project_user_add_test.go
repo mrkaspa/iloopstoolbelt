@@ -31,7 +31,7 @@ var _ = Describe("ProjectUserAdd", func() {
 		Expect(err).To(BeNil())
 	})
 
-	It("adds another himself to the project must fail", func() {
+	It("adds himself again to the project must fail", func() {
 		err := command.ProjectUserAdd(project.Slug, userLogin.Email)
 		Expect(err).NotTo(BeNil())
 	})

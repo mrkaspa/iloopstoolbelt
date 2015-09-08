@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"bitbucket.org/kiloops/api/models"
+	"bitbucket.org/kiloops/api/utils"
 
 	"github.com/codegangsta/cli"
 )
@@ -26,12 +27,14 @@ func projectListImpl(c *cli.Context) {
 func ProjectList() error {
 	return withUserSession(func(user *models.UserLogged) error {
 		var userProjects []models.UsersProjects
-		return client.CallRequestNoBodytWithHeaders("GET", "/projects", authHeaders(user)).WithResponseJSON(&userProjects, func(resp *http.Response) error {
-			switch resp.StatusCode {
-			case http.StatusOK:
-				printProjects(&userProjects)
-			}
-			return nil
+		return client.CallRequestNoBodytWithHeaders("GET", "/projects", authHeaders(user)).Solve(utils.MapExec{
+			http.StatusOK: utils.InfoExec{
+				&userProjects,
+				func(resp *http.Response) error {
+					printProjects(&userProjects)
+					return nil
+				},
+			},
 		})
 	})
 }

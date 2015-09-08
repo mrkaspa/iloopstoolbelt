@@ -31,7 +31,7 @@ func ProjectUserRemove(slug, email string) error {
 	return withUserSession(func(user *models.UserLogged) error {
 		return client.CallRequestNoBodytWithHeaders("DELETE", "/projects/"+slug+"/remove/"+email, authHeaders(user)).WithResponse(func(resp *http.Response) error {
 			switch resp.StatusCode {
-			case http.StatusBadRequest:
+			case http.StatusConflict:
 				return ErrProjectUserNotRemoved
 			case http.StatusNotFound:
 				return ErrProjectOrUserNotFound

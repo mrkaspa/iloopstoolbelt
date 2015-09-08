@@ -10,9 +10,11 @@ import (
 	"bitbucket.org/kiloops/api/endpoint"
 	"bitbucket.org/kiloops/api/gitadmin"
 	"bitbucket.org/kiloops/api/models"
+	"bitbucket.org/kiloops/api/utils"
 	"bitbucket.org/kiloops/toolbelt/command"
 	gEndpoint "github.com/infiniteloopsco/guartz/endpoint"
 	gModels "github.com/infiniteloopsco/guartz/models"
+	gUtil "github.com/infiniteloopsco/guartz/utils"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
@@ -33,6 +35,8 @@ func TestClient(t *testing.T) {
 
 var _ = BeforeSuite(func() {
 	initEnv()
+	utils.InitLogTest()
+	gUtil.InitLogTest()
 	models.InitDB()
 	gModels.InitDB()
 	gitadmin.InitVars()

@@ -29,7 +29,7 @@ func ProjectLeave(slug string) error {
 	return withUserSession(func(user *models.UserLogged) error {
 		return client.CallRequestNoBodytWithHeaders("PUT", "/projects/"+slug+"/leave", authHeaders(user)).WithResponse(func(resp *http.Response) error {
 			switch resp.StatusCode {
-			case http.StatusBadRequest:
+			case http.StatusConflict:
 				return ErrProjectNotLeft
 			case http.StatusNotFound:
 				return ErrProjectNotFound
