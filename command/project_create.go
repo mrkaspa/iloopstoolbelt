@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"bitbucket.org/kiloops/api/endpoint"
+	"bitbucket.org/kiloops/api/ierrors"
 	"bitbucket.org/kiloops/api/models"
 	"bitbucket.org/kiloops/api/utils"
 
@@ -45,7 +45,7 @@ func ProjectCreate(project *models.Project) error {
 			return errMap
 		}
 		projectJSON, _ := json.Marshal(project)
-		var jError endpoint.JSONError
+		var appError ierrors.AppError
 		return client.CallRequestWithHeaders("POST", "/projects", bytes.NewReader(projectJSON), authHeaders(user)).Solve(utils.MapExec{
 			http.StatusOK: utils.InfoExec{
 				&project,
@@ -54,9 +54,9 @@ func ProjectCreate(project *models.Project) error {
 				},
 			},
 			http.StatusConflict: utils.InfoExec{
-				&jError,
+				&appError,
 				func(resp *http.Response) error {
-					return jError
+					return appError
 				},
 			},
 			utils.Default: utils.InfoExec{

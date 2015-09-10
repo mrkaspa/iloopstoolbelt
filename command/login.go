@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"bitbucket.org/kiloops/api/endpoint"
+	"bitbucket.org/kiloops/api/ierrors"
 	"bitbucket.org/kiloops/api/models"
 	"bitbucket.org/kiloops/api/utils"
 	"github.com/codegangsta/cli"
@@ -48,7 +48,7 @@ func Login(userLogin *models.UserLogin) error {
 	}
 	userJSON, _ := json.Marshal(userLogin)
 	var user models.UserLogged
-	var jError endpoint.JSONError
+	var appError ierrors.AppError
 	return client.CallRequest("POST", "/users/login", bytes.NewReader(userJSON)).Solve(utils.MapExec{
 		http.StatusOK: utils.InfoExec{
 			&user,
@@ -57,9 +57,9 @@ func Login(userLogin *models.UserLogin) error {
 			},
 		},
 		http.StatusConflict: utils.InfoExec{
-			&jError,
+			&appError,
 			func(resp *http.Response) error {
-				return jError
+				return appError
 			},
 		},
 		utils.Default: utils.InfoExec{

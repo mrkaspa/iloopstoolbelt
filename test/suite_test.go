@@ -61,7 +61,6 @@ var _ = AfterSuite(func() {
 })
 
 var _ = BeforeEach(func() {
-	// time.Sleep(2 * time.Second)
 	cleaner()
 })
 

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"bitbucket.org/kiloops/api/endpoint"
+	"bitbucket.org/kiloops/api/ierrors"
 	"bitbucket.org/kiloops/api/models"
 	"bitbucket.org/kiloops/api/utils"
 
@@ -51,7 +51,7 @@ func CreateAccount(userLogin *models.UserLogin, SSHPath string) error {
 	}
 	userJSON, _ := json.Marshal(userLogin)
 	var user models.UserLogged
-	var jError endpoint.JSONError
+	var appError ierrors.AppError
 	return client.CallRequest("POST", "/users", bytes.NewReader(userJSON)).Solve(utils.MapExec{
 		http.StatusOK: utils.InfoExec{
 			&user,
@@ -60,9 +60,9 @@ func CreateAccount(userLogin *models.UserLogin, SSHPath string) error {
 			},
 		},
 		http.StatusConflict: utils.InfoExec{
-			&jError,
+			&appError,
 			func(resp *http.Response) error {
-				return jError
+				return appError
 			},
 		},
 		utils.Default: utils.InfoExec{
