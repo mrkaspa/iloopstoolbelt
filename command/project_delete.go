@@ -17,6 +17,10 @@ var ProjectDeleteCMD = cli.Command{
 }
 
 func projectDeleteImpl(c *cli.Context) {
+	if err := validateArgAt(c.Args(), 0); err != nil {
+		PrintError(ErrProjectNameRequired)
+		return
+	}
 	if err := ProjectDelete(c.Args()[0]); err == nil {
 		fmt.Println("The project has been deleted")
 	} else {

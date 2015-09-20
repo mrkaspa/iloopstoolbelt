@@ -18,6 +18,13 @@ var ProjectUserAddCMD = cli.Command{
 
 func projectUserAddImpl(c *cli.Context) {
 	email := c.String("email")
+	if err := validateArgAt(c.Args(), 0); err != nil {
+		PrintError(ErrProjectNameRequired)
+		return
+	}
+	if email == "" {
+		email = readLine("Enter the user email:")
+	}
 	slug := c.Args()[0]
 	if err := ProjectUserAdd(slug, email); err == nil {
 		fmt.Println("The user has been added to the project")

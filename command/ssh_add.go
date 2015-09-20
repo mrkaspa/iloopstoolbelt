@@ -24,6 +24,12 @@ var SSHAddCMD = cli.Command{
 func sshAddImpl(c *cli.Context) {
 	SSHPath := c.String("ssh")
 	name := c.String("name")
+	if SSHPath == "" {
+		SSHPath = readLine("Enter the ssh path:")
+	}
+	if name == "" {
+		name = readLine("Enter the name for the key:")
+	}
 	if err := SSHAdd(name, SSHPath); err == nil {
 		fmt.Println("The ssh key has been added")
 	} else {

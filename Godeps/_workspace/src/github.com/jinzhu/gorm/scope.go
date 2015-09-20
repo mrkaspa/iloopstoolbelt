@@ -103,7 +103,7 @@ func (scope *Scope) Dialect() Dialect {
 // Err write error
 func (scope *Scope) Err(err error) error {
 	if err != nil {
-		scope.db.err(err)
+		scope.db.AddError(err)
 	}
 	return err
 }
@@ -213,7 +213,9 @@ func (scope *Scope) CallMethod(name string, checkError bool) {
 			case func(s *Scope) error:
 				scope.Err(f(scope))
 			case func(s *DB) error:
-				scope.Err(f(scope.NewDB()))
+				newDB := scope.NewDB()
+				scope.Err(f(newDB))
+				scope.Err(newDB.Error)
 			default:
 				scope.Err(fmt.Errorf("unsupported function %v", name))
 			}
@@ -457,5 +459,5 @@ func (scope *Scope) shouldSaveAssociations() bool {
 	if ok && !saveAssociations.(bool) {
 		return false
 	}
-	return true
+	return true && !scope.HasError()
 }

@@ -27,12 +27,10 @@ func loginImpl(c *cli.Context) {
 		Email:    c.String("email"),
 		Password: c.String("password"),
 	}
-	for userLogin.Password == "" {
-		fmt.Println("Enter password: ")
-		var in string
-		fmt.Scanln(&in)
-		userLogin.Password = in
+	if userLogin.Email == "" {
+		userLogin.Email = readLine("Enter your email:")
 	}
+	userLogin.Password = readPassword("Enter your password:")
 	if err := Login(&userLogin); err == nil {
 		fmt.Println("Welcome!")
 	} else {

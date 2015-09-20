@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"os/user"
 
 	"bitbucket.org/kiloops/api/ierrors"
 	"bitbucket.org/kiloops/api/models"
@@ -16,7 +18,7 @@ import (
 
 //CreateAccountCMD command
 var CreateAccountCMD = cli.Command{
-	Name:   "create",
+	Name:   "account:create",
 	Usage:  "creates a new account",
 	Flags:  []cli.Flag{emailFlag, passwordFlag, sshFlag},
 	Action: createAccountImpl,
@@ -28,12 +30,17 @@ func createAccountImpl(c *cli.Context) {
 		Password: c.String("password"),
 	}
 	SSHPath := c.String("ssh")
-	for userLogin.Password == "" {
-		fmt.Println("Enter password: ")
-		var in string
-		fmt.Scanln(&in)
-		userLogin.Password = in
+	if userLogin.Email == "" {
+		userLogin.Email = readLine("Enter your email:")
 	}
+	if SSHPath == "" {
+		usr, err := user.Current()
+		if err != nil {
+			log.Fatal(err)
+		}
+		SSHPath = usr.HomeDir + "/.ssh/id_rsa.pub"
+	}
+	userLogin.Password = readPassword("Enter your password:")
 	if err := CreateAccount(&userLogin, SSHPath); err == nil {
 		fmt.Println("Your user account has been created, try logging in")
 	} else {

@@ -26,6 +26,10 @@ var ProjectCreateCMD = cli.Command{
 }
 
 func projectCreateImpl(c *cli.Context) {
+	if err := validateArgAt(c.Args(), 0); err != nil {
+		PrintError(ErrProjectNameRequired)
+		return
+	}
 	project := models.Project{Name: c.Args()[0]}
 	if err := ProjectCreate(&project); err == nil {
 		fmt.Println("Start to hack :)")

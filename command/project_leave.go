@@ -16,6 +16,10 @@ var ProjectLeaveCMD = cli.Command{
 }
 
 func projectLeaveImpl(c *cli.Context) {
+	if err := validateArgAt(c.Args(), 0); err != nil {
+		PrintError(ErrProjectNameRequired)
+		return
+	}
 	slug := c.Args()[0]
 	if err := ProjectLeave(slug); err == nil {
 		fmt.Println("You have left the project")

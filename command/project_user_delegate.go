@@ -18,6 +18,13 @@ var ProjectUserDelegateCMD = cli.Command{
 
 func projectUserDelegateImpl(c *cli.Context) {
 	email := c.String("email")
+	if err := validateArgAt(c.Args(), 0); err != nil {
+		PrintError(ErrProjectNameRequired)
+		return
+	}
+	if email == "" {
+		email = readLine("Enter the user email:")
+	}
 	slug := c.Args()[0]
 	if err := ProjectUserDelegate(slug, email); err == nil {
 		fmt.Println("The user has been assigned as the admin of the project")

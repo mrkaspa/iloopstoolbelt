@@ -9,6 +9,9 @@ import (
 	"os"
 	"os/user"
 
+	"github.com/codegangsta/cli"
+	"github.com/howeyc/gopass"
+
 	"gopkg.in/bluesuncorp/validator.v6"
 
 	"bitbucket.org/kiloops/api/models"
@@ -16,9 +19,13 @@ import (
 )
 
 var (
-	client            utils.Client
-	apiVersion        = "v1"
-	DefaultURLProject = "https://github.com/infiniteloopsco/default-project.git"
+	client             utils.Client
+	apiVersion         = "v1"
+	DefaultURLProject  = "https://github.com/infiniteloopsco/default-project.git"
+	ValidationMessages = map[string]string{
+		"email":    "the %s has an invalid format",
+		"required": "the %s is required",
+	}
 )
 
 //Init a http client
@@ -36,7 +43,7 @@ func PrintError(e error) {
 	case validator.ValidationErrors:
 		fmt.Println(ErrMapString(t))
 	default:
-		fmt.Println("ERROR:\n")
+		fmt.Println("ERROR:")
 		fmt.Println(t)
 	}
 }
@@ -46,7 +53,13 @@ func ErrMapString(errMap validator.ValidationErrors) string {
 	var buffer bytes.Buffer
 	buffer.WriteString("Validation errors:\n")
 	for _, value := range errMap {
-		buffer.WriteString(fmt.Sprintf("Field validation for '%s' failed on the field '%s'", value.Field, value.Tag))
+		var msg string
+		if template, ok := ValidationMessages[value.Tag]; ok {
+			msg = fmt.Sprintf(template, value.Field)
+		} else {
+			msg = fmt.Sprintf("Field validation for '%s' failed on the field '%s'", value.Tag, value.Field)
+		}
+		buffer.WriteString(msg)
 	}
 	return buffer.String()
 }
@@ -90,6 +103,13 @@ func withUserSession(f func(*models.UserLogged) error) error {
 	}
 }
 
+func validateArgAt(args cli.Args, pos int) error {
+	if len(args) < (pos+1) && args[pos] != "" {
+		return ErrArgNotFound
+	}
+	return nil
+}
+
 func loadUserSession() (*models.UserLogged, error) {
 	if data, err := ioutil.ReadFile(InfiniteConfigFile()); err == nil {
 		var user models.UserLogged
@@ -105,6 +125,25 @@ func authHeaders(user *models.UserLogged) map[string]string {
 		"AUTH_ID":    fmt.Sprintf("%d", user.ID),
 		"AUTH_TOKEN": user.Token,
 	}
+}
+
+func readLine(prompt string) string {
+	var in string
+	for in == "" {
+		fmt.Println(prompt)
+		fmt.Scanln(&in)
+	}
+	return in
+}
+
+func readPassword(prompt string) string {
+	var password string
+	for password == "" {
+		fmt.Println(prompt)
+		data := gopass.GetPasswd()
+		password = string(data)
+	}
+	return password
 }
 
 func debugResponse(resp *http.Response) {
