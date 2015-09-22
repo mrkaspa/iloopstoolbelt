@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	URL = "http://api.infiniteloops.co:8080"
+	URL     = "http://api.infiniteloops.co:8080"
+	VERSION = "1.1.1"
 )
 
 func main() {
@@ -16,7 +17,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "toolbelt"
 	app.Usage = "ILoops command client will allow you to deploy projects on the cloud"
-	app.Version = "1.0.0"
+	app.Version = VERSION
 	setCommands(app)
 	app.Run(os.Args)
 }

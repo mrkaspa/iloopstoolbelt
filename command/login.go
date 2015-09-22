@@ -4,9 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
-	"os"
 
 	"bitbucket.org/kiloops/api/ierrors"
 	"bitbucket.org/kiloops/api/models"
@@ -51,7 +49,7 @@ func Login(userLogin *models.UserLogin) error {
 		http.StatusOK: utils.InfoExec{
 			&user,
 			func(resp *http.Response) error {
-				return LoginFile(&user)
+				return loginFile(&user)
 			},
 		},
 		http.StatusConflict: utils.InfoExec{
@@ -67,16 +65,4 @@ func Login(userLogin *models.UserLogin) error {
 			},
 		},
 	})
-}
-
-//LoginFile configuration file
-func LoginFile(user *models.UserLogged) error {
-	if err := os.Mkdir(InfiniteFolder(), os.ModePerm); err != nil && !os.IsExist(err) {
-		return err
-	}
-	if _, err := os.Create(InfiniteConfigFile()); err != nil {
-		return err
-	}
-	authJSON, _ := json.Marshal(user)
-	return ioutil.WriteFile(InfiniteConfigFile(), []byte(authJSON), os.ModePerm)
 }

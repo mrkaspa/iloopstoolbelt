@@ -110,10 +110,30 @@ func validateArgAt(args cli.Args, pos int) error {
 	return nil
 }
 
+//LoginFile configuration file
+func loginFile(user *models.UserLogged) error {
+	if err := os.Mkdir(InfiniteFolder(), os.ModePerm); err != nil && !os.IsExist(err) {
+		return err
+	}
+	if _, err := os.Create(InfiniteConfigFile()); err != nil {
+		return err
+	}
+	authJSON, _ := json.Marshal(user)
+	secureContent, err := cypher(authJSON)
+	if err != nil {
+		return err
+	}
+	return ioutil.WriteFile(InfiniteConfigFile(), secureContent, os.ModePerm)
+}
+
 func loadUserSession() (*models.UserLogged, error) {
-	if data, err := ioutil.ReadFile(InfiniteConfigFile()); err == nil {
+	if secureContent, err := ioutil.ReadFile(InfiniteConfigFile()); err == nil {
+		authJSON, err := decypher(secureContent)
+		if err != nil {
+			return nil, err
+		}
 		var user models.UserLogged
-		json.Unmarshal(data, &user)
+		json.Unmarshal(authJSON, &user)
 		return &user, nil
 	} else {
 		return nil, ErrNoActiveSession
