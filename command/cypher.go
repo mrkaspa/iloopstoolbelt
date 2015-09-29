@@ -3,7 +3,7 @@ package command
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"crypto/rand"
+	"fmt"
 )
 
 var (
@@ -12,7 +12,8 @@ var (
 )
 
 func init() {
-	key := []byte("yqw134ms5b5ar1Me") // any 128-, 192-, or 256-bit key
+	fmt.Println("Entro en init")
+	key := []byte("yellow submarine") // any 128-, 192-, or 256-bit key
 	b, err := aes.NewCipher(key)
 	if err != nil {
 		panic(err)
@@ -22,9 +23,6 @@ func init() {
 		panic(err)
 	}
 	nonce = make([]byte, gcm.NonceSize())
-	if _, err := rand.Read(nonce); err != nil {
-		panic(err)
-	}
 }
 
 func cypher(data []byte) ([]byte, error) {

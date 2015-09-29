@@ -48,7 +48,7 @@ func projectInitImpl(c *cli.Context) {
 	}
 	mainScript := readLine("enter the main script path relative to the project folder:")
 	navigateToDir := false
-	if !helpers.FileExists(mainScript) && helpers.FileExists(projectName+"/"+mainScript) {
+	if !helpers.FileExists(mainScript) && !helpers.FileExists(projectName+"/"+mainScript) {
 		PrintError(ErrProjectScriptNotFound)
 		return
 	}
