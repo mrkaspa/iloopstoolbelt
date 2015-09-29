@@ -21,7 +21,6 @@ import (
 var (
 	client             utils.Client
 	apiVersion         = "v1"
-	DefaultURLProject  = "https://github.com/infiniteloopsco/default-project.git"
 	ValidationMessages = map[string]string{
 		"email":    "the %s has an invalid format",
 		"required": "the %s is required",

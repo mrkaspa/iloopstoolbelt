@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"bitbucket.org/kiloops/toolbelt/command"
-	"github.com/gosimple/slug"
+	"github.com/codeskyblue/go-sh"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -18,12 +18,12 @@ var _ = Describe("ProjectUserAdd", func() {
 		command.CreateAccount(&userLogin, SSHPath)
 		command.CreateAccount(&anotherUserLogin, anotherSSHPath)
 		forceLogin(&userLogin)
-		command.ProjectCreate(&project)
+		sh.Command("git", "clone", TestURLProject, project.Name).Run()
+		command.ProjectInit(&project, true, scriptTest, cronTest)
 	})
 
 	AfterEach(func() {
-		name := slug.Make(project.Name)
-		os.RemoveAll(name)
+		os.RemoveAll(project.Name)
 	})
 
 	It("adds another user to the project", func() {
