@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"bitbucket.org/kiloops/toolbelt/command"
-	"github.com/gosimple/slug"
+	"github.com/codeskyblue/go-sh"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -16,12 +16,12 @@ var _ = Describe("ProjectDelete", func() {
 		project = defaultProject()
 		command.CreateAccount(&userLogin, SSHPath)
 		forceLogin(&userLogin)
-		command.ProjectCreate(&project)
+		sh.Command("git", "clone", TestURLProject, project.Name).Run()
+		command.ProjectInit(&project, true, scriptTest, cronTest)
 	})
 
 	AfterEach(func() {
-		name := slug.Make(project.Name)
-		os.RemoveAll(name)
+		os.RemoveAll(project.Name)
 	})
 
 	It("deletes an existing project", func() {

@@ -5,13 +5,13 @@ import (
 
 	"bitbucket.org/kiloops/api/gitadmin"
 	"bitbucket.org/kiloops/toolbelt/command"
-	"github.com/gosimple/slug"
+	"github.com/codeskyblue/go-sh"
 	"github.com/mrkaspa/go-helpers"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("ProjectCreate", func() {
+var _ = Describe("ProjectInit", func() {
 
 	BeforeEach(func() {
 		userLogin = defaultUser()
@@ -21,11 +21,12 @@ var _ = Describe("ProjectCreate", func() {
 	})
 
 	It("creates a new project", func() {
-		err := command.ProjectCreate(&project)
+		sh.Command("git", "clone", TestURLProject, project.Name).Run()
+		err := command.ProjectInit(&project, true, scriptTest, cronTest)
 		Expect(err).To(BeNil())
-		name := slug.Make(project.Name)
-		Expect(helpers.FileExists(name)).To(BeTrue())
-		os.RemoveAll(name)
+		// name := slug.Make(project.Name)
+		Expect(helpers.FileExists(project.Name)).To(BeTrue())
+		os.RemoveAll(project.Name)
 		gitadmin.RevertAll(gitadmin.GITOLITEPATH)
 	})
 
