@@ -9,7 +9,7 @@ import (
 
 var (
 	URL     = "http://api.infiniteloops.co:8080"
-	VERSION = "1.1.1"
+	VERSION = "1.1.3"
 )
 
 func main() {

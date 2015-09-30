@@ -63,7 +63,8 @@ func CreateAccount(userLogin *models.UserLogin, SSHPath string) error {
 		http.StatusOK: utils.InfoExec{
 			&user,
 			func(resp *http.Response) error {
-				return UploadSSH("New Account", SSHPath, &user)
+				err := UploadSSH("New Account", SSHPath, &user)
+				return err
 			},
 		},
 		http.StatusConflict: utils.InfoExec{

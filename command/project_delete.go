@@ -12,7 +12,7 @@ import (
 //ProjectDeleteCMD command
 var ProjectDeleteCMD = cli.Command{
 	Name:   "project:delete",
-	Usage:  "Deletes a project by name",
+	Usage:  "deletes a project by name",
 	Action: projectDeleteImpl,
 }
 

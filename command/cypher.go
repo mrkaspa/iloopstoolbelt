@@ -3,7 +3,6 @@ package command
 import (
 	"crypto/aes"
 	"crypto/cipher"
-	"fmt"
 )
 
 var (
@@ -12,7 +11,6 @@ var (
 )
 
 func init() {
-	fmt.Println("Entro en init")
 	key := []byte("yellow submarine") // any 128-, 192-, or 256-bit key
 	b, err := aes.NewCipher(key)
 	if err != nil {
