@@ -1,6 +1,7 @@
 package command
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -150,7 +151,8 @@ func readLine(prompt string) string {
 	var in string
 	for in == "" {
 		fmt.Println(prompt)
-		fmt.Scanln(&in)
+		reader := bufio.NewReader(os.Stdin)
+		in, _ = reader.ReadString('\n')
 	}
 	return in
 }

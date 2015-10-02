@@ -25,9 +25,13 @@ var ProjectInitCMD = cli.Command{
 	Action: projectInitImpl,
 }
 
+var remoteName = "iloops"
+
 func projectInitImpl(c *cli.Context) {
 	var projectName string
 	currentDir, _ := os.Getwd()
+
+	//gets the name of the directory
 	if len(c.Args()) == 0 {
 		splits := strings.Split(currentDir, "/")
 		projectName = splits[len(splits)-1]
@@ -46,15 +50,26 @@ func projectInitImpl(c *cli.Context) {
 			return
 		}
 	}
+
+	//gets the script name
 	mainScript := readLine("enter the main script path relative to the project folder:")
 	navigateToDir := false
 	if !helpers.FileExists(mainScript) && !helpers.FileExists(projectName+"/"+mainScript) {
 		PrintError(ErrProjectScriptNotFound)
 		return
 	}
+
+	//validates if it has to navigate to dir
 	if helpers.FileExists(projectName + "/" + mainScript) {
 		navigateToDir = true
 	}
+
+	//validates if the iloops remote exists
+	if validateRemoteExistence(projectName, navigateToDir) {
+		PrintError(ErrProjectAlreadyRemoteILoops)
+		return
+	}
+
 	cronFormat := readLine("enter the cron format:")
 	project := models.Project{Name: projectName}
 	if err := ProjectInit(&project, navigateToDir, mainScript, cronFormat); err == nil {
@@ -118,13 +133,32 @@ func initProjectGit(project *models.Project, navigateToDir bool, mainScript, cro
 	ioutil.WriteFile(dirName+IloopProject(), configJSON, os.ModePerm)
 
 	//git init
-	remoteName := "origin"
-	if helpers.FileExists(dirName + ".git") {
-		remoteName = "iloops"
-	} else {
+	if !helpers.FileExists(dirName + ".git") {
 		session.Command("git", "init").Run()
 	}
 
 	//git remote add
 	return session.Command("git", "remote", "add", remoteName, git).Run()
+}
+
+func validateRemoteExistence(dirName string, navigateToDir bool) bool {
+	if !helpers.FileExists(dirName + ".git") {
+		return false
+	}
+	session := sh.NewSession()
+	if navigateToDir {
+		session.SetDir(dirName)
+	}
+	output, err := session.Command("git", "remote").Output()
+	if err != nil {
+		return false
+	}
+	lines := strings.Split(string(output), "\n")
+	exist := false
+	for _, line := range lines {
+		if line == remoteName {
+			exist = true
+		}
+	}
+	return exist
 }
