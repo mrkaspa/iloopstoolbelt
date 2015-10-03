@@ -154,6 +154,10 @@ func readLine(prompt string) string {
 		reader := bufio.NewReader(os.Stdin)
 		in, _ = reader.ReadString('\n')
 	}
+	sz := len(in)
+	if sz > 0 && in[sz-1] == '\n' {
+		in = in[:sz-1]
+	}
 	return in
 }
 
