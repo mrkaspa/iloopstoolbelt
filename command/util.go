@@ -177,3 +177,11 @@ func debugResponse(resp *http.Response) {
 	fmt.Println(string(contents))
 	fmt.Println("*****************")
 }
+
+func shortString(s string, i int) string {
+	runes := []rune(s)
+	if len(runes) > i {
+		return string(runes[:i])
+	}
+	return s
+}

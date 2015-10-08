@@ -41,6 +41,11 @@ func createAccountImpl(c *cli.Context) {
 		SSHPath = usr.HomeDir + "/.ssh/id_rsa.pub"
 	}
 	userLogin.Password = readPassword("Enter your password:")
+	secondPassword := readPassword("Enter your password again:")
+	if userLogin.Password != secondPassword {
+		PrintError(ErrPasswordsUnMatch)
+		return
+	}
 	if err := CreateAccount(&userLogin, SSHPath); err == nil {
 		fmt.Println("Your user account has been created, try logging in")
 	} else {
