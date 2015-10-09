@@ -7,11 +7,6 @@ var emailFlag = cli.StringFlag{
 	Usage: "user email",
 }
 
-var passwordFlag = cli.StringFlag{
-	Name:  "password, p",
-	Usage: "user password",
-}
-
 var sshFlag = cli.StringFlag{
 	Name:  "ssh, s",
 	Usage: "ssh key",

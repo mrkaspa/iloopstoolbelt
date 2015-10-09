@@ -32,7 +32,7 @@ func sshDeleteImpl(c *cli.Context) {
 //SSHAdd new key
 func SSHDelete(name string) error {
 	return withUserSession(func(user *models.UserLogged) error {
-		return client.CallRequestNoBodytWithHeaders("DELETE", "/slug/"+name, authHeaders(user)).WithResponse(func(resp *http.Response) error {
+		return client.CallRequestNoBodytWithHeaders("DELETE", "/ssh/"+name, authHeaders(user)).WithResponse(func(resp *http.Response) error {
 			switch resp.StatusCode {
 			case http.StatusConflict:
 				return ErrSSHNotDeleted

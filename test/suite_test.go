@@ -36,6 +36,7 @@ func TestClient(t *testing.T) {
 var _ = BeforeSuite(func() {
 	initEnv()
 	utils.InitLogTest()
+	utils.InitEmail()
 	gUtil.InitLogTest()
 	models.InitDB()
 	gModels.InitDB()

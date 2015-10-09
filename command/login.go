@@ -16,14 +16,13 @@ import (
 var LoginCMD = cli.Command{
 	Name:   "login",
 	Usage:  "login with credentials",
-	Flags:  []cli.Flag{emailFlag, passwordFlag},
+	Flags:  []cli.Flag{emailFlag},
 	Action: loginImpl,
 }
 
 func loginImpl(c *cli.Context) {
 	userLogin := models.UserLogin{
-		Email:    c.String("email"),
-		Password: c.String("password"),
+		Email: c.String("email"),
 	}
 	if userLogin.Email == "" {
 		userLogin.Email = readLine("Enter your email:")

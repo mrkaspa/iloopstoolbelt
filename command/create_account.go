@@ -20,14 +20,13 @@ import (
 var CreateAccountCMD = cli.Command{
 	Name:   "account:create",
 	Usage:  "creates a new account",
-	Flags:  []cli.Flag{emailFlag, passwordFlag, sshFlag},
+	Flags:  []cli.Flag{emailFlag, sshFlag},
 	Action: createAccountImpl,
 }
 
 func createAccountImpl(c *cli.Context) {
 	userLogin := models.UserLogin{
-		Email:    c.String("email"),
-		Password: c.String("password"),
+		Email: c.String("email"),
 	}
 	SSHPath := c.String("ssh")
 	if userLogin.Email == "" {
