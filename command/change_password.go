@@ -16,7 +16,6 @@ import (
 var ChangePasswordCMD = cli.Command{
 	Name:   "password:change",
 	Usage:  "sets a new password",
-	Flags:  []cli.Flag{emailFlag},
 	Action: changePasswordImpl,
 }
 

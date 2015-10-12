@@ -9,7 +9,7 @@ import (
 
 var (
 	URL     = "http://api.infiniteloops.co:8080"
-	VERSION = "1.2.0"
+	VERSION = "1.2.2"
 )
 
 func main() {
@@ -25,6 +25,8 @@ func main() {
 func setCommands(app *cli.App) {
 	app.Commands = []cli.Command{
 		command.CreateAccountCMD,
+		command.ChangePasswordCMD,
+		command.ForgotPasswordCMD,
 		command.LoginCMD,
 		command.LogoutCMD,
 		command.SSHAddCMD,
