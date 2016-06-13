@@ -7,7 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"bitbucket.org/kiloops/api/models"
+	"github.com/mrkaspa/iloopsapi/models"
 
 	"github.com/codegangsta/cli"
 	"github.com/mrkaspa/go-helpers"

@@ -3,8 +3,8 @@ package test
 import (
 	"os"
 
-	"bitbucket.org/kiloops/api/gitadmin"
-	"bitbucket.org/kiloops/toolbelt/command"
+	"github.com/mrkaspa/iloopsapi/gitadmin"
+	"github.com/mrkaspa/iloopstoolbelt/command"
 	"github.com/codeskyblue/go-sh"
 	"github.com/mrkaspa/go-helpers"
 	. "github.com/onsi/ginkgo"

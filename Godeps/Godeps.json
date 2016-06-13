@@ -1,21 +1,21 @@
 {
-	"ImportPath": "bitbucket.org/kiloops/toolbelt",
+	"ImportPath": "github.com/mrkaspa/iloopstoolbelt",
 	"GoVersion": "go1.4.2",
 	"Deps": [
 		{
-			"ImportPath": "bitbucket.org/kiloops/api/gitadmin",
+			"ImportPath": "github.com/mrkaspa/iloopsapi/gitadmin",
 			"Rev": "720b074a68c3c30182ce8558b6a5bf876cbc971f"
 		},
 		{
-			"ImportPath": "bitbucket.org/kiloops/api/ierrors",
+			"ImportPath": "github.com/mrkaspa/iloopsapi/ierrors",
 			"Rev": "720b074a68c3c30182ce8558b6a5bf876cbc971f"
 		},
 		{
-			"ImportPath": "bitbucket.org/kiloops/api/models",
+			"ImportPath": "github.com/mrkaspa/iloopsapi/models",
 			"Rev": "720b074a68c3c30182ce8558b6a5bf876cbc971f"
 		},
 		{
-			"ImportPath": "bitbucket.org/kiloops/api/utils",
+			"ImportPath": "github.com/mrkaspa/iloopsapi/utils",
 			"Rev": "720b074a68c3c30182ce8558b6a5bf876cbc971f"
 		},
 		{

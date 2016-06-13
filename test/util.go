@@ -1,6 +1,6 @@
 package test
 
-import "bitbucket.org/kiloops/api/models"
+import "github.com/mrkaspa/iloopsapi/models"
 
 func defaultUser() models.UserLogin {
 	return models.UserLogin{Email: "michel.ingesoft@gmail.com", Password: "h1h1h1h1h1h1"}

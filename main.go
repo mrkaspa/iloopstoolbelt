@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"bitbucket.org/kiloops/toolbelt/command"
+	"github.com/mrkaspa/iloopstoolbelt/command"
 	"github.com/codegangsta/cli"
 )
 

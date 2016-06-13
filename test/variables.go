@@ -1,6 +1,6 @@
 package test
 
-import "bitbucket.org/kiloops/api/models"
+import "github.com/mrkaspa/iloopsapi/models"
 
 var (
 	SSHPath          = "/Users/michelperez/.ssh/demo_rsa.pub"

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"bitbucket.org/kiloops/api/models"
-	"bitbucket.org/kiloops/api/utils"
+	"github.com/mrkaspa/iloopsapi/models"
+	"github.com/mrkaspa/iloopsapi/utils"
 
 	"github.com/codegangsta/cli"
 )

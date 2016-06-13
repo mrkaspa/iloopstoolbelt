@@ -15,8 +15,8 @@ import (
 
 	"gopkg.in/bluesuncorp/validator.v6"
 
-	"bitbucket.org/kiloops/api/models"
-	"bitbucket.org/kiloops/api/utils"
+	"github.com/mrkaspa/iloopsapi/models"
+	"github.com/mrkaspa/iloopsapi/utils"
 )
 
 var (

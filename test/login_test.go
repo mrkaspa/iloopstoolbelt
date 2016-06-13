@@ -1,7 +1,7 @@
 package test
 
 import (
-	"bitbucket.org/kiloops/toolbelt/command"
+	"github.com/mrkaspa/iloopstoolbelt/command"
 	"github.com/mrkaspa/go-helpers"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"bitbucket.org/kiloops/api/models"
+	"github.com/mrkaspa/iloopsapi/models"
 
 	"github.com/codegangsta/cli"
 )

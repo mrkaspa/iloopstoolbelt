@@ -1,8 +1,8 @@
 package test
 
 import (
-	"bitbucket.org/kiloops/api/models"
-	"bitbucket.org/kiloops/toolbelt/command"
+	"github.com/mrkaspa/iloopsapi/models"
+	"github.com/mrkaspa/iloopstoolbelt/command"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )

@@ -3,7 +3,7 @@ package test
 import (
 	"os"
 
-	"bitbucket.org/kiloops/toolbelt/command"
+	"github.com/mrkaspa/iloopstoolbelt/command"
 	"github.com/codeskyblue/go-sh"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

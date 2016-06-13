@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"os/user"
 
-	"bitbucket.org/kiloops/api/ierrors"
-	"bitbucket.org/kiloops/api/models"
-	"bitbucket.org/kiloops/api/utils"
+	"github.com/mrkaspa/iloopsapi/ierrors"
+	"github.com/mrkaspa/iloopsapi/models"
+	"github.com/mrkaspa/iloopsapi/utils"
 
 	"github.com/codegangsta/cli"
 	"github.com/mrkaspa/go-helpers"
